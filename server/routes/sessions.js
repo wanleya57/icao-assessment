@@ -93,10 +93,10 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Get pilots list
+// Get pilots list (shared across all users)
 router.get('/pilots/list', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM pilots WHERE created_by = ? ORDER BY name', [req.user.id]);
+    const [rows] = await db.query('SELECT * FROM pilots ORDER BY name');
     res.json({ code: 0, data: rows });
   } catch (err) {
     res.json({ code: 500, msg: '服务器错误' });
@@ -113,6 +113,16 @@ router.post('/pilots', async (req, res) => {
       [name, employeeId || null, rank || '学员', req.user.id]
     );
     res.json({ code: 0, data: { id: result.insertId } });
+  } catch (err) {
+    res.json({ code: 500, msg: '服务器错误' });
+  }
+});
+
+// Delete pilot
+router.delete('/pilots/:id', async (req, res) => {
+  try {
+    await db.query('DELETE FROM pilots WHERE id = ?', [req.params.id]);
+    res.json({ code: 0, msg: '已删除' });
   } catch (err) {
     res.json({ code: 500, msg: '服务器错误' });
   }

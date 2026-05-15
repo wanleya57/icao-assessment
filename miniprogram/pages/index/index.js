@@ -1,4 +1,4 @@
-const { get, post } = require('../../utils/request');
+const { get, post, del } = require('../../utils/request');
 const { isLoggedIn } = require('../../utils/auth');
 
 Page({
@@ -69,6 +69,23 @@ Page({
     } else {
       wx.showToast({ title: res.msg, icon: 'none' });
     }
+  },
+
+  deletePilot(e) {
+    const { id, name } = e.currentTarget.dataset;
+    wx.showModal({
+      title: '确认删除',
+      content: `确定删除学员「${name}」吗？`,
+      success: async (res) => {
+        if (res.confirm) {
+          const r = await del(`/sessions/pilots/${id}`);
+          if (r.code === 0) {
+            this.loadPilots();
+            wx.showToast({ title: '已删除', icon: 'success' });
+          }
+        }
+      }
+    });
   },
 
   async startSession() {

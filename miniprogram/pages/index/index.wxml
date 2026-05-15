@@ -28,9 +28,10 @@
 
     <!-- 学员快选 -->
     <view class="pilot-chips" wx:if="{{pilots.length > 0}}">
-      <view class="pilot-chip {{selectedPilot && selectedPilot.id === item.id ? 'active' : ''}}"
-            wx:for="{{pilots}}" wx:key="id" bindtap="selectPilot" data-pilot="{{item}}">
-        {{item.name}}
+      <view class="pilot-chip-wrap {{selectedPilot && selectedPilot.id === item.id ? 'active' : ''}}"
+            wx:for="{{pilots}}" wx:key="id">
+        <view class="pilot-chip" bindtap="selectPilot" data-pilot="{{item}}">{{item.name}}</view>
+        <view class="pilot-chip-del" catchtap="deletePilot" data-id="{{item.id}}" data-name="{{item.name}}">&#x2715;</view>
       </view>
       <view class="pilot-chip add" bindtap="toggleAddPilot">+ 添加</view>
     </view>
