@@ -125,7 +125,7 @@ Page({
     if (this._loginLock) return;
     const { phone, password, loginLoading } = this.data;
     if (loginLoading) return;
-    if (!phone.trim()) return wx.showToast({ title: '请输入学号', icon: 'none' });
+    if (!phone.trim()) return wx.showToast({ title: '请输入电话号', icon: 'none' });
     if (!password) return wx.showToast({ title: '请输入密码', icon: 'none' });
 
     this._loginLock = true;
