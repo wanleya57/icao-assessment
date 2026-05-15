@@ -1,0 +1,101 @@
+<view class="report-page" wx:if="{{loaded}}">
+  <view class="card">
+    <view class="card-title">评估报告</view>
+    <view class="info-row">
+      <text class="info-label">日期</text>
+      <text class="info-value">{{session.flight_date}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">学员</text>
+      <text class="info-value">{{session.student_name}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">机型</text>
+      <text class="info-value">{{session.aircraft_type}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">任务</text>
+      <text class="info-value">{{session.task_type}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">胜任力评估汇总</view>
+    <view class="summary-row" wx:for="{{competencies}}" wx:key="code">
+      <view class="summary-left">
+        <text class="summary-code">{{item.code}}</text>
+        <text class="summary-name">{{item.name}}</text>
+      </view>
+      <view class="summary-level" style="background: {{item.levelColor}}20; color: {{item.levelColor}}; border: 1rpx solid {{item.levelColor}}40;">
+        {{item.levelLabel}}
+      </view>
+    </view>
+  </view>
+
+  <view class="card risk-card" wx:if="{{riskAlerts.length > 0}}">
+    <view class="card-title">风险提示</view>
+    <view class="alert-item" wx:for="{{riskAlerts}}" wx:key="compCode">
+      <text class="alert-icon">!</text>
+      <view class="alert-content">
+        <text class="alert-comp">{{item.compName}}</text>
+        <text class="alert-detail">{{item.details}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:for="{{competencies}}" wx:key="code">
+    <view class="card-title detail-title">
+      <text>{{item.code}} {{item.name}}</text>
+      <view class="detail-level-badge" style="background: {{item.levelColor}}20; color: {{item.levelColor}};">{{item.levelLabel}}</view>
+    </view>
+
+    <view class="ob-table">
+      <view class="ob-table-header">
+        <text class="ob-col-code">OB</text>
+        <text class="ob-col-name">可观察行为</text>
+        <text class="ob-col-level">等级</text>
+      </view>
+      <view class="ob-table-row" wx:for="{{item.obs}}" wx:for-item="ob" wx:key="code">
+        <text class="ob-col-code">{{ob.code}}</text>
+        <text class="ob-col-name">{{ob.name}}</text>
+        <view class="ob-col-level">
+          <view class="level-dot" style="background: {{ob.levelColor}};"></view>
+          <text class="level-text" style="color: {{ob.levelColor}};">{{ob.levelLabel}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- OB 详细记录 -->
+    <view class="ob-detail-section" wx:for="{{item.obs}}" wx:for-item="ob" wx:key="code" wx:if="{{ob.records.length > 0}}">
+      <view class="ob-detail-header">
+        <text class="ob-detail-code">{{ob.code}}</text>
+        <text class="ob-detail-name">{{ob.name}}</text>
+      </view>
+      <view class="ob-detail-record" wx:for="{{ob.records}}" wx:for-item="rec" wx:key="id">
+        <view class="ob-detail-top">
+          <view class="ob-detail-level" style="background:{{rec.levelColor}}20;color:{{rec.levelColor}};border:1rpx solid {{rec.levelColor}}40;">{{rec.levelLabel}}</view>
+          <text class="ob-detail-time">{{rec.created_at}}</text>
+          <view class="ob-detail-delete" catchtap="deleteRecord" data-record-id="{{rec.id}}">删除</view>
+        </view>
+        <view class="ob-detail-fb" wx:if="{{rec.original_text}}">
+          <text class="ob-detail-label">教员评语</text>
+          <text class="ob-detail-text">{{rec.original_text}}</text>
+        </view>
+        <view class="ob-detail-fb" wx:if="{{rec.professional_text}}">
+          <text class="ob-detail-label">专业表述</text>
+          <text class="ob-detail-text professional">{{rec.professional_text}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">教员建议</view>
+    <textarea class="notes-input" placeholder="输入训练建议和改进方向..." bindinput="onNotesInput" value="{{instructorNotes}}" maxlength="1000" />
+  </view>
+
+  <view class="actions">
+    <view class="btn-primary" bindtap="copyReport">复制报告文本</view>
+    <view class="btn-secondary" bindtap="goBack">返回首页</view>
+  </view>
+</view>

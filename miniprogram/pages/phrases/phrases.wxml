@@ -1,0 +1,50 @@
+<view class="phrases-page">
+  <view class="page-header">
+    <text class="page-title">常用证据短语</text>
+    <view class="add-btn" bindtap="toggleAdd">+ 自定义</view>
+  </view>
+
+  <!-- 分类筛选 -->
+  <scroll-view scroll-x class="cat-bar" enhanced show-scrollbar="{{false}}">
+    <view class="cat-item {{activeCategory === '' ? 'active' : ''}}" bindtap="filterCategory" data-cat="">全部</view>
+    <view class="cat-item {{activeCategory === item ? 'active' : ''}}" wx:for="{{categories}}" wx:key="*this" bindtap="filterCategory" data-cat="{{item}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- 添加表单 -->
+  <view class="add-form" wx:if="{{showAdd}}">
+    <view class="form-item">
+      <text class="form-label">类别</text>
+      <picker range="{{categories}}" bindchange="onCategoryChange" value="{{categoryIndex}}">
+        <view class="form-input picker-display">
+          <text>{{categories[categoryIndex]}}</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">短语内容</text>
+      <input class="form-input" placeholder="输入常用证据描述" bindinput="onNewText" value="{{newText}}" />
+    </view>
+    <view class="form-actions">
+      <view class="btn-secondary" bindtap="toggleAdd">取消</view>
+      <view class="btn-primary" bindtap="addPhrase">添加</view>
+    </view>
+  </view>
+
+  <!-- 短语列表 -->
+  <view class="phrase-list" wx:if="{{phrases.length > 0}}">
+    <view class="phrase-card" wx:for="{{phrases}}" wx:key="id">
+      <view class="phrase-cat">{{item.category}}</view>
+      <view class="phrase-text" bindtap="copyPhrase" data-text="{{item.text}}">{{item.text}}</view>
+      <view class="phrase-actions">
+        <text class="phrase-copy" bindtap="copyPhrase" data-text="{{item.text}}">复制</text>
+        <text class="phrase-del" wx:if="{{!item.is_default}}" catchtap="deletePhrase" data-phrase="{{item}}">删除</text>
+        <text class="phrase-default" wx:if="{{item.is_default}}">默认</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <text class="empty-text">暂无短语</text>
+  </view>
+</view>

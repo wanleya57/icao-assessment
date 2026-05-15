@@ -1,0 +1,34 @@
+<view class="history-page">
+  <view class="page-header">
+    <text class="page-title">训练记录</text>
+  </view>
+
+  <!-- 筛选 -->
+  <view class="filter-bar">
+    <view class="filter-item {{filter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</view>
+    <view class="filter-item {{filter === 'in_progress' ? 'active' : ''}}" bindtap="setFilter" data-filter="in_progress">进行中</view>
+    <view class="filter-item {{filter === 'completed' ? 'active' : ''}}" bindtap="setFilter" data-filter="completed">已完成</view>
+  </view>
+
+  <!-- 列表 -->
+  <view class="session-list" wx:if="{{sessions.length > 0}}">
+    <view class="session-card" wx:for="{{filteredSessions}}" wx:key="id" bindtap="viewReport" data-session="{{item}}">
+      <view class="session-top">
+        <view class="session-name">{{item.student_name}}</view>
+        <view class="session-status {{item.status}}">{{item.status === 'completed' ? '已完成' : '进行中'}}</view>
+      </view>
+      <view class="session-info">
+        <text>{{item.aircraft_type}} · {{item.task_type}}</text>
+      </view>
+      <view class="session-bottom">
+        <text class="session-date">{{item.flight_date}}</text>
+        <text class="session-del" wx:if="{{item.status === 'in_progress'}}" catchtap="deleteSession" data-session="{{item}}">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <text class="empty-icon">📋</text>
+    <text class="empty-text">暂无训练记录</text>
+  </view>
+</view>

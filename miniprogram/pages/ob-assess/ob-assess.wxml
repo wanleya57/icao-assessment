@@ -1,0 +1,77 @@
+<view class="ob-assess-page">
+  <view class="page-header">
+    <text class="page-title">{{compName}}</text>
+    <text class="page-desc" wx:if="{{compDescription}}">{{compDescription}}</text>
+    <text class="page-progress">已评估 {{ratedCount}}/{{obs.length}} 项</text>
+  </view>
+
+  <scroll-view scroll-y class="ob-list">
+    <view class="ob-card" wx:for="{{obs}}" wx:key="code">
+      <view class="ob-header">
+        <text class="ob-code">{{item.code}}</text>
+        <text class="ob-name">{{item.name_cn}}</text>
+      </view>
+      <view class="ob-name-en" wx:if="{{item.name_en}}">{{item.name_en}}</view>
+
+      <!-- 等级分布 -->
+      <view class="ob-level-summary" wx:if="{{item.recordCount > 0}}">
+        <text class="ob-summary-text">共 {{item.recordCount}} 条记录：{{item.levelSummary}}</text>
+      </view>
+
+      <view class="level-buttons">
+        <view class="level-btn {{item.level === l.value ? 'level-active' : ''}}"
+              wx:for="{{levels}}" wx:for-item="l" wx:key="value"
+              style="{{item.level === l.value ? 'background:' + l.color + ';color:#fff;border-color:' + l.color : ''}}"
+              bindtap="onSelectLevel"
+              data-index="{{index}}" data-level="{{l.value}}" data-ob-code="{{item.code}}">
+          {{l.label}}
+        </view>
+      </view>
+
+      <view class="evidence-toggle" bindtap="toggleEvidence" data-index="{{index}}">
+        <text class="evidence-toggle-text">{{item.showEvidence ? '收起证据' : '添加证据'}}</text>
+      </view>
+      <view class="ob-evidence" wx:if="{{item.showEvidence}}">
+        <textarea class="evidence-input"
+                  placeholder="描述观察到的具体行为..."
+                  value="{{item.evidence}}"
+                  bindinput="onEvidenceInput"
+                  data-index="{{index}}"
+                  maxlength="500"
+                  auto-height />
+      </view>
+
+      <!-- 历史记录 -->
+      <view class="records-toggle" wx:if="{{item.recordCount > 0}}" bindtap="toggleRecords" data-index="{{index}}">
+        <text class="records-toggle-text">{{item.showRecords ? '收起记录' : '查看记录 (' + item.recordCount + ')'}}</text>
+      </view>
+      <view class="ob-records" wx:if="{{item.showRecords}}">
+        <view class="ob-record-item" wx:for="{{item.records}}" wx:for-item="rec" wx:key="id">
+          <view class="ob-record-top">
+            <view class="ob-record-level" style="background:{{rec.levelColor}};color:#fff;">{{rec.levelLabel}}</view>
+            <text class="ob-record-time">{{rec.created_at}}</text>
+            <view class="ob-record-delete" catchtap="deleteRecord" data-ob-index="{{index}}" data-record-id="{{rec.id}}">删除</view>
+          </view>
+          <view class="ob-record-fb" wx:if="{{rec.originalText}}">
+            <text class="ob-record-label">教员评语</text>
+            <text class="ob-record-text">{{rec.originalText}}</text>
+          </view>
+          <view class="ob-record-fb" wx:if="{{rec.professionalText}}">
+            <text class="ob-record-label">专业表述</text>
+            <text class="ob-record-text professional">{{rec.professionalText}}</text>
+          </view>
+          <view class="ob-record-fb" wx:if="{{rec.evidence}}">
+            <text class="ob-record-label">证据</text>
+            <text class="ob-record-text">{{rec.evidence}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="save-bar">
+    <view class="save-btn {{saving ? 'saving' : ''}}" bindtap="saveAssessments">
+      {{saving ? '保存中...' : '保存评估'}}
+    </view>
+  </view>
+</view>

@@ -1,0 +1,54 @@
+<view class="settings-page">
+  <!-- 账号信息 -->
+  <view class="account-card">
+    <view class="account-avatar">
+      <text class="avatar-text">{{userInfo.name[0] || '?'}}</text>
+    </view>
+    <view class="account-info">
+      <text class="account-name">{{userInfo.name || '未登录'}}</text>
+      <text class="account-phone">{{userInfo.phone || ''}}</text>
+      <text class="account-id" wx:if="{{userInfo.employee_id}}">工号：{{userInfo.employee_id}}</text>
+    </view>
+  </view>
+
+  <view class="settings-group">
+    <view class="settings-title">显示</view>
+    <view class="setting-item">
+      <view class="setting-left">
+        <text class="setting-name">夜间模式</text>
+        <text class="setting-desc">降低屏幕亮度，适合夜间使用</text>
+      </view>
+      <switch checked="{{nightMode}}" bindchange="toggleNightMode" color="#111" />
+    </view>
+  </view>
+
+  <view class="settings-group">
+    <view class="settings-title">数据</view>
+    <view class="setting-item" bindtap="viewPhrases">
+      <view class="setting-left">
+        <text class="setting-name">常用短语库</text>
+        <text class="setting-desc">管理证据快捷短语</text>
+      </view>
+      <text class="setting-arrow">›</text>
+    </view>
+    <view class="setting-item" bindtap="clearData">
+      <view class="setting-left">
+        <text class="setting-name">清除缓存</text>
+        <text class="setting-desc">清除本地缓存数据</text>
+      </view>
+      <text class="setting-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="settings-group">
+    <view class="setting-item" bindtap="onLogout">
+      <view class="setting-left">
+        <text class="setting-name" style="color: #e53935;">退出登录</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="version">
+    <text>CBTA胜任力评估系统 v{{version}}</text>
+  </view>
+</view>

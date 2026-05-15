@@ -1,0 +1,22 @@
+.settings-page { min-height: 100vh; background: #f5f5f5; }
+
+.account-card { display: flex; align-items: center; gap: 24rpx; padding: 32rpx 24rpx; background: #fff; margin-bottom: 20rpx; }
+.account-avatar { width: 96rpx; height: 96rpx; background: #1a73e8; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.avatar-text { font-size: 40rpx; color: #fff; font-weight: 600; }
+.account-info { flex: 1; display: flex; flex-direction: column; gap: 4rpx; }
+.account-name { font-size: 32rpx; font-weight: 600; color: #111; }
+.account-phone { font-size: 26rpx; color: #666; }
+.account-id { font-size: 22rpx; color: #999; }
+
+.settings-group { margin-bottom: 20rpx; }
+.settings-title { font-size: 24rpx; color: #999; padding: 24rpx 24rpx 12rpx; }
+.setting-item { display: flex; justify-content: space-between; align-items: center; padding: 24rpx; background: #fff; border-bottom: 1rpx solid #f5f5f5; }
+.setting-item:last-child { border-bottom: none; }
+.setting-left { flex: 1; }
+.setting-name { font-size: 30rpx; color: #333; display: block; }
+.setting-desc { font-size: 22rpx; color: #999; margin-top: 4rpx; display: block; }
+.setting-arrow { font-size: 32rpx; color: #ccc; }
+
+.threshold-input { width: 80rpx; text-align: center; background: #f5f5f5; border-radius: 8rpx; padding: 8rpx; font-size: 28rpx; }
+
+.version { text-align: center; padding: 60rpx 0; font-size: 22rpx; color: #ccc; }
