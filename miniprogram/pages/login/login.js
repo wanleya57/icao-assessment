@@ -11,7 +11,10 @@ Page({
     showPassword: false,
     showReset: false,
     resetPhone: '',
-    resetName: '',
+    resetCode: '',
+    resetCodeLoading: false,
+    resetCodeSent: false,
+    resetCodeCountdown: 0,
     resetPassword: '',
     showRegister: false,
     regPhone: '',
@@ -57,8 +60,8 @@ Page({
   onBlurPassword() { if (this.data.f === 'w') this.setData({ f: '' }); },
   onFocusResetPhone() { this.setData({ f: 'rp' }); },
   onBlurResetPhone() { if (this.data.f === 'rp') this.setData({ f: '' }); },
-  onFocusResetName() { this.setData({ f: 'rn' }); },
-  onBlurResetName() { if (this.data.f === 'rn') this.setData({ f: '' }); },
+  onFocusResetCode() { this.setData({ f: 'rc' }); },
+  onBlurResetCode() { if (this.data.f === 'rc') this.setData({ f: '' }); },
   onFocusResetPassword() { this.setData({ f: 'rw' }); },
   onBlurResetPassword() { if (this.data.f === 'rw') this.setData({ f: '' }); },
 
@@ -69,11 +72,14 @@ Page({
   onPhoneInput(e) { this.setData({ phone: e.detail.value }); },
   onPasswordInput(e) { this.setData({ password: e.detail.value }); },
   onResetPhoneInput(e) { this.setData({ resetPhone: e.detail.value }); },
-  onResetNameInput(e) { this.setData({ resetName: e.detail.value }); },
+  onResetCodeInput(e) { this.setData({ resetCode: e.detail.value }); },
   onResetPasswordInput(e) { this.setData({ resetPassword: e.detail.value }); },
 
   showResetModal() { this.setData({ showReset: true }); },
-  closeResetModal() { this.setData({ showReset: false }); },
+  closeResetModal() {
+    if (this._resetCountdownTimer) clearInterval(this._resetCountdownTimer);
+    this.setData({ showReset: false, resetPhone: '', resetCode: '', resetPassword: '', resetCodeSent: false, resetCodeCountdown: 0 });
+  },
   showRegister() { this.setData({ showRegister: true }); },
   closeRegister() {
     if (this._countdownTimer) clearInterval(this._countdownTimer);
@@ -193,13 +199,44 @@ Page({
     }
   },
 
+  async onSendResetCode() {
+    if (this.data.resetCodeLoading || this.data.resetCodeCountdown > 0) return;
+    const phone = this.data.resetPhone.trim();
+    if (!phone) return wx.showToast({ title: '请输入手机号', icon: 'none' });
+    if (!/^1\d{10}$/.test(phone)) return wx.showToast({ title: '请输入正确的手机号', icon: 'none' });
+
+    this.setData({ resetCodeLoading: true });
+    try {
+      const res = await post('/auth/send-code', { phone, type: 'reset' });
+      if (res.code === 0) {
+        wx.showToast({ title: '验证码已发送', icon: 'success' });
+        this.setData({ resetCodeCountdown: 60 });
+        this._resetCountdownTimer = setInterval(() => {
+          const c = this.data.resetCodeCountdown - 1;
+          if (c <= 0) {
+            clearInterval(this._resetCountdownTimer);
+            this.setData({ resetCodeCountdown: 0 });
+          } else {
+            this.setData({ resetCodeCountdown: c });
+          }
+        }, 1000);
+      } else {
+        wx.showToast({ title: res.msg, icon: 'none' });
+      }
+    } catch (e) {
+      wx.showToast({ title: '发送失败', icon: 'none' });
+    } finally {
+      this.setData({ resetCodeLoading: false });
+    }
+  },
+
   async onResetPassword() {
     if (this._resetLock) return;
-    const { resetPhone, resetName, resetPassword, resetLoading } = this.data;
+    const { resetPhone, resetCode, resetPassword, resetLoading } = this.data;
     if (resetLoading) return;
     if (!resetPhone.trim()) return wx.showToast({ title: '请输入手机号', icon: 'none' });
-    if (!resetName.trim()) return wx.showToast({ title: '请输入姓名', icon: 'none' });
-    if (!resetPassword) return wx.showToast({ title: '请输入新密码', icon: 'none' });
+    if (!resetCode || resetCode.length !== 6) return wx.showToast({ title: '请输入6位验证码', icon: 'none' });
+    if (!resetPassword || resetPassword.length < 6) return wx.showToast({ title: '密码至少6位', icon: 'none' });
 
     this._resetLock = true;
     this.setData({ resetLoading: true });
@@ -207,7 +244,7 @@ Page({
     try {
       const res = await post('/auth/reset-password', {
         phone: resetPhone.trim(),
-        name: resetName.trim(),
+        code: resetCode,
         newPassword: resetPassword
       });
       if (res.code === 0) {
@@ -216,7 +253,8 @@ Page({
           showReset: false,
           phone: resetPhone.trim(),
           password: resetPassword,
-          resetPhone: '', resetName: '', resetPassword: ''
+          resetPhone: '', resetCode: '', resetPassword: '',
+          resetCodeCountdown: 0
         });
       } else {
         wx.showToast({ title: res.msg, icon: 'none' });

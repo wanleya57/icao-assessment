@@ -44,11 +44,12 @@ async function sendSms(phone, code) {
 
 router.post('/send-code', async (req, res) => {
   try {
-    const { phone } = req.body;
+    const { phone, type } = req.body;
     if (!phone || !/^1\d{10}$/.test(phone)) return res.json({ code: 400, msg: '请输入正确的手机号' });
 
     const [existing] = await db.query('SELECT id FROM instructors WHERE phone = ?', [phone]);
-    if (existing.length > 0) return res.json({ code: 400, msg: '该手机号已注册' });
+    if (type === 'register' && existing.length > 0) return res.json({ code: 400, msg: '该手机号已注册' });
+    if (type === 'reset' && existing.length === 0) return res.json({ code: 400, msg: '该手机号未注册' });
 
     const now = Date.now();
     const prev = codeStore.get(phone);
@@ -161,12 +162,22 @@ router.post('/login', async (req, res) => {
 
 router.post('/reset-password', async (req, res) => {
   try {
-    const { phone, name, newPassword } = req.body;
-    if (!phone || !name || !newPassword) return res.json({ code: 400, msg: '手机号、姓名、新密码均为必填' });
+    const { phone, code, newPassword } = req.body;
+    if (!phone || !code || !newPassword) return res.json({ code: 400, msg: '手机号、验证码、新密码均为必填' });
     if (newPassword.length < 6) return res.json({ code: 400, msg: '密码至少6位' });
 
-    const [rows] = await db.query('SELECT * FROM instructors WHERE phone = ? AND name = ?', [phone, name.trim()]);
-    if (rows.length === 0) return res.json({ code: 400, msg: '手机号或姓名不匹配' });
+    const stored = codeStore.get(phone);
+    if (!stored) return res.json({ code: 400, msg: '请先获取验证码' });
+    if (Date.now() - stored.time > 300000) {
+      codeStore.delete(phone);
+      return res.json({ code: 400, msg: '验证码已过期，请重新获取' });
+    }
+    if (stored.code !== code) return res.json({ code: 400, msg: '验证码错误' });
+
+    const [rows] = await db.query('SELECT * FROM instructors WHERE phone = ?', [phone]);
+    if (rows.length === 0) return res.json({ code: 400, msg: '该手机号未注册' });
+
+    codeStore.delete(phone);
 
     const hashed = await bcrypt.hash(newPassword, 10);
     await db.query('UPDATE instructors SET password = ? WHERE id = ?', [hashed, rows[0].id]);

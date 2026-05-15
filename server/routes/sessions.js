@@ -93,10 +93,10 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Get pilots list (shared across all users)
+// Get pilots list
 router.get('/pilots/list', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM pilots ORDER BY name');
+    const [rows] = await db.query('SELECT * FROM pilots WHERE created_by = ? ORDER BY name', [req.user.id]);
     res.json({ code: 0, data: rows });
   } catch (err) {
     res.json({ code: 500, msg: '服务器错误' });
