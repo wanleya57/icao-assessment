@@ -27,7 +27,7 @@
     </view>
 
     <!-- 学员快选 -->
-    <view class="pilot-chips" wx:if="{{pilots.length > 0}}">
+    <view class="pilot-chips">
       <view class="pilot-chip-wrap {{selectedPilot && selectedPilot.id === item.id ? 'active' : ''}}"
             wx:for="{{pilots}}" wx:key="id">
         <view class="pilot-chip" bindtap="selectPilot" data-pilot="{{item}}">{{item.name}}</view>
