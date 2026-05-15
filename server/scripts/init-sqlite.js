@@ -35,7 +35,7 @@ db.exec(`
   CREATE TABLE instructors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     phone TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
+    password TEXT,
     name TEXT NOT NULL,
     employee_id TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP

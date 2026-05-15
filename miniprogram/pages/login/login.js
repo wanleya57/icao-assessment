@@ -20,6 +20,10 @@ Page({
     loginLoading: false,
     resetLoading: false,
     regLoading: false,
+    regCode: '',
+    regCodeLoading: false,
+    regCodeSent: false,
+    regCodeCountdown: 0,
     f: '',
     rememberAccount: true
   },
@@ -71,10 +75,45 @@ Page({
   showResetModal() { this.setData({ showReset: true }); },
   closeResetModal() { this.setData({ showReset: false }); },
   showRegister() { this.setData({ showRegister: true }); },
-  closeRegister() { this.setData({ showRegister: false }); },
+  closeRegister() {
+    if (this._countdownTimer) clearInterval(this._countdownTimer);
+    this.setData({ showRegister: false, regPhone: '', regName: '', regPassword: '', regCode: '', regCodeSent: false, regCodeCountdown: 0 });
+  },
   onRegPhoneInput(e) { this.setData({ regPhone: e.detail.value }); },
   onRegNameInput(e) { this.setData({ regName: e.detail.value }); },
   onRegPasswordInput(e) { this.setData({ regPassword: e.detail.value }); },
+  onRegCodeInput(e) { this.setData({ regCode: e.detail.value }); },
+
+  async onSendRegCode() {
+    if (this.data.regCodeLoading || this.data.regCodeCountdown > 0) return;
+    const phone = this.data.regPhone.trim();
+    if (!phone) return wx.showToast({ title: '请输入手机号', icon: 'none' });
+    if (!/^1\d{10}$/.test(phone)) return wx.showToast({ title: '请输入正确的手机号', icon: 'none' });
+
+    this.setData({ regCodeLoading: true });
+    try {
+      const res = await post('/auth/send-code', { phone });
+      if (res.code === 0) {
+        wx.showToast({ title: '验证码已发送', icon: 'success' });
+        this.setData({ regCodeSent: true, regCodeCountdown: 60 });
+        this._countdownTimer = setInterval(() => {
+          const c = this.data.regCodeCountdown - 1;
+          if (c <= 0) {
+            clearInterval(this._countdownTimer);
+            this.setData({ regCodeCountdown: 0 });
+          } else {
+            this.setData({ regCodeCountdown: c });
+          }
+        }, 1000);
+      } else {
+        wx.showToast({ title: res.msg, icon: 'none' });
+      }
+    } catch (e) {
+      wx.showToast({ title: '发送失败', icon: 'none' });
+    } finally {
+      this.setData({ regCodeLoading: false });
+    }
+  },
 
   async onLogin() {
     if (this._loginLock) return;
@@ -112,11 +151,12 @@ Page({
 
   async onRegister() {
     if (this._regLock) return;
-    const { regPhone, regName, regPassword, regLoading } = this.data;
+    const { regPhone, regName, regPassword, regCode, regLoading } = this.data;
     if (regLoading) return;
     if (!regPhone.trim()) return wx.showToast({ title: '请输入手机号', icon: 'none' });
     if (!regName.trim()) return wx.showToast({ title: '请输入姓名', icon: 'none' });
     if (!regPassword || regPassword.length < 6) return wx.showToast({ title: '密码至少6位', icon: 'none' });
+    if (!regCode || regCode.length !== 6) return wx.showToast({ title: '请输入6位验证码', icon: 'none' });
 
     this._regLock = true;
     this.setData({ regLoading: true });
@@ -129,6 +169,7 @@ Page({
         phone: regPhone.trim(),
         name: regName.trim(),
         password: regPassword,
+        code: regCode,
         deviceType
       });
       if (res.code === 0) {
@@ -137,7 +178,8 @@ Page({
           showRegister: false,
           phone: regPhone.trim(),
           password: regPassword,
-          regPhone: '', regName: '', regPassword: ''
+          regPhone: '', regName: '', regPassword: '', regCode: '',
+          regCodeSent: false, regCodeCountdown: 0
         });
       } else {
         wx.showToast({ title: res.msg, icon: 'none' });
