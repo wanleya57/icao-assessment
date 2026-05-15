@@ -101,7 +101,7 @@ Page({
       const res = await post('/auth/send-code', { phone });
       if (res.code === 0) {
         wx.showToast({ title: '验证码已发送', icon: 'success' });
-        this.setData({ regCodeSent: true, regCodeCountdown: 60 });
+        this.setData({ regCodeSent: true, regCodeCountdown: 300 });
         this._countdownTimer = setInterval(() => {
           const c = this.data.regCodeCountdown - 1;
           if (c <= 0) {
@@ -210,7 +210,7 @@ Page({
       const res = await post('/auth/send-code', { phone, type: 'reset' });
       if (res.code === 0) {
         wx.showToast({ title: '验证码已发送', icon: 'success' });
-        this.setData({ resetCodeCountdown: 60 });
+        this.setData({ resetCodeCountdown: 300 });
         this._resetCountdownTimer = setInterval(() => {
           const c = this.data.resetCodeCountdown - 1;
           if (c <= 0) {

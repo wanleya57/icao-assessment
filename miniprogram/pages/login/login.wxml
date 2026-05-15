@@ -45,7 +45,6 @@
       <view class="mb">
         <view class="field mf"><image class="ic-svg" src="/images/phone.svg"></image><input class="fi" type="number" maxlength="11" placeholder="手机号" placeholder-class="ph" value="{{resetPhone}}" bindinput="onResetPhoneInput" /></view>
         <view class="field code-row mf">
-          <image class="ic-svg" src="/images/key-outline.svg"></image>
           <input class="fi code-input" type="number" maxlength="6" placeholder="验证码" placeholder-class="ph" value="{{resetCode}}" bindinput="onResetCodeInput" />
           <view class="code-btn {{resetCodeCountdown > 0 ? 'dim' : ''}}" bindtap="onSendResetCode">
             <text wx:if="{{resetCodeLoading}}">发送中</text>
@@ -68,7 +67,6 @@
       <view class="mb">
         <view class="field mf"><image class="ic-svg" src="/images/phone.svg"></image><input class="fi" type="number" maxlength="11" placeholder="手机号" placeholder-class="ph" value="{{regPhone}}" bindinput="onRegPhoneInput" /></view>
         <view class="field code-row mf">
-          <image class="ic-svg" src="/images/key-outline.svg"></image>
           <input class="fi code-input" type="number" maxlength="6" placeholder="验证码" placeholder-class="ph" value="{{regCode}}" bindinput="onRegCodeInput" />
           <view class="code-btn {{regCodeCountdown > 0 ? 'dim' : ''}}" bindtap="onSendRegCode">
             <text wx:if="{{regCodeLoading}}">发送中</text>
@@ -77,7 +75,7 @@
           </view>
         </view>
         <view class="field mf"><view class="ic-u"></view><input class="fi" placeholder="姓名" placeholder-class="ph" value="{{regName}}" bindinput="onRegNameInput" /></view>
-        <view class="field mf"><view class="ic-l"></view><input class="fi" type="text" password placeholder="设置密码（至少6位）" placeholder-class="ph" value="{{regPassword}}" bindinput="onRegPasswordInput" /></view>
+        <view class="field mf"><image class="ic-svg" src="/images/key-outline.svg"></image><input class="fi" type="text" password placeholder="设置密码（至少6位）" placeholder-class="ph" value="{{regPassword}}" bindinput="onRegPasswordInput" /></view>
       </view>
       <view class="mft">
         <view class="mbtn mc" bindtap="closeRegister">取消</view>
