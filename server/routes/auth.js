@@ -6,7 +6,7 @@ const db = require('../config/db');
 const { JWT_SECRET } = require('../middleware/auth');
 
 // 国阳云 SMS configuration
-const SMS_APPCODE = process.env.SMS_APPCODE || '<YOUR_SMS_APPCODE>';
+const SMS_APPCODE = process.env.SMS_APPCODE || '10bfcb149ece4fa38a099ced48131791';
 const SMS_SIGN_ID = process.env.SMS_SIGN_ID || '2e65b1bb3d054466b82f0c9d125465e2';
 const SMS_TEMPLATE_ID = process.env.SMS_TEMPLATE_ID || '908e94ccf08b4476ba6c876d13f084ad';
 
