@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'icao-assessment-dev-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET || '<YOUR_JWT_SECRET>';
 if (!process.env.JWT_SECRET) {
   console.error('警告: JWT_SECRET 环境变量未设置，使用默认密钥（仅限开发环境）');
 }

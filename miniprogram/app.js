@@ -1,6 +1,6 @@
 App({
   globalData: {
-    baseUrl: 'https://fshd5u.cn/api',
+    baseUrl: 'https://<YOUR_DOMAIN>/api',
     token: '',
     userInfo: null,
     nightMode: false,

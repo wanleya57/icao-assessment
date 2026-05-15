@@ -4,7 +4,7 @@ echo Restarting server...
 echo ========================================
 echo.
 
-ssh ssh.fshd5u.cn "sudo /var/www/start-server.sh"
+ssh ssh.<YOUR_DOMAIN> "sudo /var/www/start-server.sh"
 
 echo.
 echo ========================================

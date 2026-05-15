@@ -302,17 +302,17 @@ const insertPhraseMany = db.transaction((phrases) => {
 insertPhraseMany(defaultPhrases);
 
 // Default admin user
-const hash = bcrypt.hashSync('123456', 10);
+const hash = bcrypt.hashSync('<YOUR_PASSWORD>', 10);
 db.prepare('INSERT INTO instructors (phone, password, name, employee_id) VALUES (?, ?, ?, ?)')
-  .run('13800000000', hash, '默认教员', 'INS001');
+  .run('<YOUR_PHONE>', hash, '<YOUR_NAME>', 'INS001');
 
 // Sample pilot
 db.prepare('INSERT INTO pilots (name, employee_id, rank, created_by) VALUES (?, ?, ?, ?)')
-  .run('张三', 'PIL001', '学员', 1);
+  .run('<YOUR_STUDENT_NAME>', 'PIL001', '学员', 1);
 
 console.log('Database initialized successfully');
 console.log(`Competencies: ${competencies.length}`);
 console.log(`Observable Behaviors: ${observableBehaviors.length}`);
 console.log(`Default phrases: ${defaultPhrases.length}`);
-console.log('Default login: 13800000000 / 123456');
+console.log('Default login: <YOUR_PHONE> / <YOUR_PASSWORD>');
 db.close();

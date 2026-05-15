@@ -1,6 +1,6 @@
 const app = getApp();
 
-const AI_BASE = 'https://api.fshd5u.cn';
+const AI_BASE = 'https://api.<YOUR_DOMAIN>';
 
 let _kickShown = false;
 

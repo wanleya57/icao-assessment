@@ -8,8 +8,8 @@ echo "=============================="
 # ============================================================
 # 你需要先改这里
 # ============================================================
-SSH_USER="wmx"
-SSH_PUBKEY='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKj6heCeqLGaWQE4yM6ynwE++UfeCLpQwT06QS0sDD/8 wmx@DESKTOP-HNQ5F2Q'
+SSH_USER="<YOUR_SSH_USER>"
+SSH_PUBKEY='<YOUR_SSH_PUBLIC_KEY>'
 
 # ============================================================
 # 基础检查
