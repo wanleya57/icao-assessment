@@ -1,0 +1,29 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/record/record",
+    "pages/ob-assess/ob-assess",
+    "pages/report/report",
+    "pages/history/history",
+    "pages/phrases/phrases",
+    "pages/settings/settings"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "CBTA胜任力评估",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#333",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/history/history", "text": "历史" },
+      { "pagePath": "pages/settings/settings", "text": "设置" }
+    ]
+  }
+}

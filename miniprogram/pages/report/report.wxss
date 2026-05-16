@@ -1,0 +1,60 @@
+.report-page { padding: 24rpx; min-height: 100vh; box-sizing: border-box; padding-bottom: 40rpx; }
+.card { background: #fff; border-radius: 16rpx; padding: 28rpx; margin-bottom: 20rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06); }
+.card-title { font-size: 30rpx; font-weight: 600; color: #333; margin-bottom: 20rpx; }
+
+.info-row { display: flex; justify-content: space-between; padding: 12rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.info-row:last-child { border-bottom: none; }
+.info-label { font-size: 26rpx; color: #999; }
+.info-value { font-size: 26rpx; color: #333; }
+
+.summary-row { display: flex; justify-content: space-between; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.summary-row:last-child { border-bottom: none; }
+.summary-left { display: flex; align-items: center; gap: 12rpx; }
+.summary-code { font-size: 24rpx; color: #1a73e8; font-weight: 600; min-width: 80rpx; }
+.summary-name { font-size: 28rpx; color: #333; }
+.summary-level { font-size: 22rpx; padding: 6rpx 16rpx; border-radius: 6rpx; font-weight: 500; }
+
+.risk-card { border-left: 6rpx solid #e53935; }
+.alert-item { display: flex; align-items: flex-start; gap: 12rpx; padding: 12rpx 0; }
+.alert-icon { width: 36rpx; height: 36rpx; background: #e53935; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22rpx; font-weight: 600; flex-shrink: 0; }
+.alert-content { flex: 1; }
+.alert-comp { font-size: 28rpx; color: #333; font-weight: 500; }
+.alert-detail { font-size: 24rpx; color: #666; margin-top: 4rpx; display: block; }
+
+.detail-title { display: flex; justify-content: space-between; align-items: center; }
+.detail-level-badge { font-size: 22rpx; padding: 4rpx 14rpx; border-radius: 6rpx; font-weight: 500; }
+
+.ob-table { margin-top: 16rpx; }
+.ob-table-header { display: flex; padding: 12rpx 0; border-bottom: 2rpx solid #e8e8e8; }
+.ob-table-header text { font-size: 22rpx; color: #999; font-weight: 500; }
+.ob-table-row { display: flex; padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; align-items: center; }
+.ob-table-row:last-child { border-bottom: none; }
+.ob-col-code { width: 100rpx; font-size: 22rpx; color: #1a73e8; font-weight: 500; }
+.ob-col-name { flex: 1; font-size: 26rpx; color: #333; }
+.ob-col-level { display: flex; align-items: center; gap: 8rpx; min-width: 120rpx; justify-content: flex-end; }
+.level-dot { width: 14rpx; height: 14rpx; border-radius: 50%; }
+.level-text { font-size: 22rpx; font-weight: 500; }
+
+.ob-evidence-section { padding: 12rpx 0 0 100rpx; font-size: 24rpx; }
+.ev-label { color: #1a73e8; font-weight: 500; }
+.ev-text { color: #666; margin-left: 8rpx; }
+
+.ob-detail-section { margin-top: 16rpx; padding-top: 16rpx; border-top: 1rpx solid #f0f0f0; }
+.ob-detail-section:first-child { border-top: none; margin-top: 0; }
+.ob-detail-header { display: flex; align-items: center; gap: 8rpx; margin-bottom: 12rpx; }
+.ob-detail-code { font-size: 22rpx; color: #1a73e8; font-weight: 600; }
+.ob-detail-name { font-size: 24rpx; color: #333; }
+.ob-detail-record { padding: 12rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.ob-detail-record:last-child { border-bottom: none; }
+.ob-detail-top { display: flex; align-items: center; gap: 12rpx; margin-bottom: 8rpx; }
+.ob-detail-level { font-size: 20rpx; padding: 2rpx 10rpx; border-radius: 4rpx; }
+.ob-detail-time { font-size: 20rpx; color: #bbb; flex: 1; }
+.ob-detail-delete { font-size: 20rpx; color: #e53935; padding: 4rpx 12rpx; border: 1rpx solid #e53935; border-radius: 4rpx; }
+.ob-detail-fb { display: flex; align-items: flex-start; gap: 8rpx; margin-top: 6rpx; }
+.ob-detail-label { font-size: 20rpx; color: #999; flex-shrink: 0; padding-top: 2rpx; }
+.ob-detail-text { font-size: 22rpx; color: #666; line-height: 1.5; }
+.ob-detail-text.professional { color: #333; }
+
+.notes-input { width: 100%; height: 200rpx; background: #f5f5f5; border: 1rpx solid #e8e8e8; border-radius: 12rpx; padding: 20rpx; font-size: 28rpx; box-sizing: border-box; }
+
+.actions { display: flex; flex-direction: column; gap: 16rpx; margin-top: 16rpx; }

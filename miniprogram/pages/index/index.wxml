@@ -1,0 +1,72 @@
+<view class="home-page">
+  <!-- 顶部 -->
+  <view class="header">
+    <text class="header-title">CBTA 胜任力评估</text>
+    <text class="header-sub">快速记录 · 客观报告</text>
+  </view>
+
+  <!-- 进行中的训练 -->
+  <view class="card" wx:if="{{recentSessions.length > 0}}">
+    <view class="card-title">进行中的训练</view>
+    <view class="recent-item" wx:for="{{recentSessions}}" wx:key="id" bindtap="continueSession" data-session="{{item}}">
+      <view class="recent-left">
+        <text class="recent-name">{{item.student_name}}</text>
+        <text class="recent-info">{{item.aircraft_type}} · {{item.task_type}}</text>
+      </view>
+      <text class="recent-arrow">继续 ›</text>
+    </view>
+  </view>
+
+  <!-- 新建训练 -->
+  <view class="card">
+    <view class="card-title">新建训练记录</view>
+
+    <view class="form-item">
+      <text class="form-label">学员姓名</text>
+      <input class="form-input" placeholder="输入或选择学员" placeholder-style="color:#bbb;font-size:28rpx" bindinput="onStudentInput" value="{{studentName}}" />
+    </view>
+
+    <!-- 学员快选 -->
+    <view class="pilot-chips">
+      <view class="pilot-chip-wrap {{selectedPilot && selectedPilot.id === item.id ? 'active' : ''}}"
+            wx:for="{{pilots}}" wx:key="id">
+        <view class="pilot-chip" bindtap="selectPilot" data-pilot="{{item}}">{{item.name}}</view>
+        <view class="pilot-chip-del" catchtap="deletePilot" data-id="{{item.id}}" data-name="{{item.name}}">✕</view>
+      </view>
+      <view class="pilot-chip add" bindtap="toggleAddPilot">+ 添加</view>
+    </view>
+
+    <!-- 添加学员 -->
+    <view class="add-pilot-row" wx:if="{{showAddPilot}}">
+      <input class="form-input" style="flex:1" placeholder="新学员姓名" placeholder-style="color:#bbb;font-size:28rpx" bindinput="onNewPilotName" value="{{newPilotName}}" />
+      <view class="btn-primary" style="width:120rpx;padding:16rpx;font-size:26rpx;" bindtap="addPilot">添加</view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">机型</text>
+      <input class="form-input" placeholder="如 B737、A320" placeholder-style="color:#bbb;font-size:28rpx" bindinput="onAircraftInput" value="{{aircraftType}}" />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">任务类型</text>
+      <picker range="{{taskTypes}}" bindchange="onTaskChange" value="{{taskIndex}}">
+        <view class="form-input picker-display">
+          <text>{{taskTypes[taskIndex]}}</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">训练日期</text>
+      <picker mode="date" bindchange="onDateChange" value="{{flightDate}}">
+        <view class="form-input picker-display">
+          <text>{{flightDate}}</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="btn-primary start-btn" bindtap="startSession">开始记录</view>
+  </view>
+</view>

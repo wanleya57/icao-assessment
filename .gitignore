@@ -1,0 +1,12 @@
+node_modules/
+server/data/icao.db
+server/data/icao.db-shm
+server/data/icao.db-wal
+*.log
+*.zip
+.DS_Store
+Thumbs.db
+project.private.config.json
+miniprogram/project.private.config.json
+qwen_tunnel_run.bat
+server/data/avatars/

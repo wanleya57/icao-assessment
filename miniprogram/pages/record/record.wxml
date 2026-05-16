@@ -1,0 +1,81 @@
+<view class="record-page">
+  <view class="status-bar">
+    <view class="status-left">
+      <text class="student-name">{{studentName}}</text>
+      <text class="total-count">已评估 {{totalAssessed}}/{{totalOBs}} 可观察行为</text>
+    </view>
+    <view class="end-btn" bindtap="showEnd">结束训练</view>
+  </view>
+
+  <!-- 8 大胜任力卡片 -->
+  <view class="comp-grid">
+    <view class="comp-card" wx:for="{{competencies}}" wx:key="code"
+          style="border-color: {{compLevels[item.code] === 1 ? '#e53935' : compLevels[item.code] === 2 ? '#e53935' : compLevels[item.code] === 3 ? '#4caf50' : compLevels[item.code] === 4 ? '#1a73e8' : '#eee'}}"
+          bindtap="onTapComp" data-code="{{item.code}}">
+      <view class="comp-icon">{{item.icon}}</view>
+      <view class="comp-name">{{item.name}}</view>
+      <view class="comp-level-badge level-{{compLevels[item.code] || 'unrated'}}" wx:if="{{compLevels[item.code]}}">
+        {{compLevels[item.code] === 1 ? '不合格' : compLevels[item.code] === 2 ? '不合格' : compLevels[item.code] === 3 ? '良好' : compLevels[item.code] === 4 ? '优秀' : ''}}
+      </view>
+      <view class="comp-stat">{{compAssessed[item.code] || 0}}/{{item.obCount}}</view>
+    </view>
+  </view>
+
+  <!-- 评估进度 -->
+  <view class="assess-progress">
+    <text class="progress-text">评估进度 {{totalAssessed}}/{{totalOBs}} 可观察行为</text>
+    <view class="progress-bar-bg">
+      <view class="progress-bar-fill" style="width: {{totalAssessed / totalOBs * 100}}%"></view>
+    </view>
+  </view>
+
+  <!-- AI 评语识别 -->
+  <view class="ai-section">
+    <view class="ai-section-title">AI 评语识别</view>
+    <textarea class="ai-input" placeholder="输入对学员的日常评价，如：这孩子沟通不太好，说话不清楚，遇到突发情况就慌了..."
+              value="{{aiFeedback}}" bindinput="onFeedbackInput" maxlength="2000" auto-height />
+    <view class="ai-btn {{aiAnalyzing ? 'loading' : ''}}" bindtap="analyzeFeedback">
+      <view class="ai-spinner" wx:if="{{aiAnalyzing}}"></view>
+      <text>{{aiAnalyzing ? '分析中...' : 'AI 识别'}}</text>
+    </view>
+  </view>
+
+  <!-- AI 识别结果 -->
+  <view class="ai-results" wx:if="{{showAiResults}}">
+    <view class="ai-results-header">
+      <text class="ai-results-title">识别结果（{{aiResults.length}} 条）</text>
+      <text class="ai-results-close" bindtap="clearAiResults">✕</text>
+    </view>
+
+    <view class="ai-result-item" wx:for="{{aiResults}}" wx:key="index" bindtap="toggleAiResult" data-index="{{index}}">
+      <view class="ai-result-top">
+        <view class="ai-checkbox {{item.selected ? 'checked' : ''}}">
+          <text class="ai-checkbox-icon" wx:if="{{item.selected}}">✓</text>
+        </view>
+        <text class="ai-result-ob">{{item.obCode}} {{item.obName}}</text>
+        <view class="ai-result-level level-{{item.suggestedLevel}}">{{item.suggestedLevelLabel}}</view>
+      </view>
+      <view class="ai-fb-row">
+        <text class="ai-fb-label">教员评语</text>
+        <text class="ai-fb-text">{{item.originalText}}</text>
+      </view>
+      <view class="ai-fb-row">
+        <text class="ai-fb-label">专业表述</text>
+        <text class="ai-fb-text professional">{{item.professionalText}}</text>
+      </view>
+    </view>
+
+    <view class="ai-apply-all" bindtap="applyAllAiResults" wx:if="{{aiResults.length > 0}}">采纳选中</view>
+  </view>
+
+  <!-- 结束确认 -->
+  <view class="end-mask" wx:if="{{showEndConfirm}}" bindtap="hideEnd"></view>
+  <view class="end-popup {{showEndConfirm ? 'show' : ''}}">
+    <view class="end-popup-title">确认结束训练？</view>
+    <view class="end-popup-desc">结束后将生成评估报告，无法再修改评估</view>
+    <view class="end-popup-actions">
+      <view class="btn-secondary" bindtap="hideEnd">继续评估</view>
+      <view class="btn-primary" bindtap="endSession">结束并查看报告</view>
+    </view>
+  </view>
+</view>

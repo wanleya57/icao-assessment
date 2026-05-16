@@ -1,0 +1,86 @@
+<view class="page">
+  <image class="bg" src="/images/bg.png" mode="aspectFill"></image>
+  <view class="content">
+    <view class="card">
+      <text class="card-title">账号登录</text>
+
+      <view class="field {{f === 'p' ? 'on' : ''}}">
+        <view class="ic-u"></view>
+        <input class="fi" type="number" maxlength="11" placeholder="请输入电话号" placeholder-class="ph" value="{{phone}}" bindinput="onPhoneInput" bindfocus="onFocusPhone" bindblur="onBlurPhone" />
+      </view>
+
+      <view class="field {{f === 'w' ? 'on' : ''}}">
+        <image class="ic-key" src="/images/key-outline.svg"></image>
+        <input class="fi" type="text" password="{{!showPassword}}" placeholder="请输入密码" placeholder-class="ph" value="{{password}}" bindinput="onPasswordInput" bindfocus="onFocusPassword" bindblur="onBlurPassword" />
+        <image class="ic-eye" src="{{showPassword ? '/images/eye-open.svg' : '/images/eye-close.svg'}}" bindtap="toggleShowPassword"></image>
+      </view>
+
+      <view class="row">
+        <view class="ck-box" bindtap="toggleRemember">
+          <view class="ck {{rememberAccount ? 'ck-on' : ''}}"></view>
+          <text class="ck-t">记住账号</text>
+        </view>
+        <view class="ck-box">
+          <text class="fk" bindtap="showResetModal">忘记密码?</text>
+          <text class="fk" bindtap="showRegister">注册账号</text>
+        </view>
+      </view>
+
+      <view class="btn {{loginLoading ? 'dim' : ''}}" bindtap="onLogin">
+        <view class="sp" wx:if="{{loginLoading}}"></view>
+        <view class="plane" wx:else></view>
+        <text class="bt">{{loginLoading ? '登录中...' : '登 录'}}</text>
+      </view>
+
+      <view class="agree">
+        <view class="agree-dot"></view>
+        <text class="agree-text">仅限校内师生使用，请勿泄露账号密码</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="mask" wx:if="{{showReset}}" bindtap="closeResetModal">
+    <view class="modal" catchtap="noop">
+      <view class="mh"><text class="mt">密码重置</text><text class="mx" bindtap="closeResetModal">✕</text></view>
+      <view class="mb">
+        <view class="field mf"><image class="ic-svg" src="/images/phone.svg"></image><input class="fi" type="number" maxlength="11" placeholder="手机号" placeholder-class="ph" value="{{resetPhone}}" bindinput="onResetPhoneInput" /></view>
+        <view class="field code-row mf">
+          <input class="fi code-input" type="number" maxlength="6" placeholder="验证码" placeholder-class="ph" value="{{resetCode}}" bindinput="onResetCodeInput" />
+          <view class="code-btn {{resetCodeCountdown > 0 ? 'dim' : ''}}" bindtap="onSendResetCode">
+            <text wx:if="{{resetCodeLoading}}">发送中</text>
+            <text wx:elif="{{resetCodeCountdown > 0}}">{{resetCodeCountdown}}s</text>
+            <text wx:else>获取验证码</text>
+          </view>
+        </view>
+        <view class="field mf"><image class="ic-svg" src="/images/key-outline.svg"></image><input class="fi" type="text" password placeholder="新密码（至少8位，含字母和数字）" placeholder-class="ph" value="{{resetPassword}}" bindinput="onResetPasswordInput" /></view>
+      </view>
+      <view class="mft">
+        <view class="mbtn mc" bindtap="closeResetModal">取消</view>
+        <view class="mbtn mo" bindtap="onResetPassword"><text wx:if="{{resetLoading}}">重置中</text><text wx:else>确认重置</text></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="mask" wx:if="{{showRegister}}" bindtap="closeRegister">
+    <view class="modal" catchtap="noop">
+      <view class="mh"><text class="mt">注册账号</text><text class="mx" bindtap="closeRegister">✕</text></view>
+      <view class="mb">
+        <view class="field mf"><image class="ic-svg" src="/images/phone.svg"></image><input class="fi" type="number" maxlength="11" placeholder="手机号" placeholder-class="ph" value="{{regPhone}}" bindinput="onRegPhoneInput" /></view>
+        <view class="field code-row mf">
+          <input class="fi code-input" type="number" maxlength="6" placeholder="验证码" placeholder-class="ph" value="{{regCode}}" bindinput="onRegCodeInput" />
+          <view class="code-btn {{regCodeCountdown > 0 ? 'dim' : ''}}" bindtap="onSendRegCode">
+            <text wx:if="{{regCodeLoading}}">发送中</text>
+            <text wx:elif="{{regCodeCountdown > 0}}">{{regCodeCountdown}}s</text>
+            <text wx:else>获取验证码</text>
+          </view>
+        </view>
+        <view class="field mf"><view class="ic-u"></view><input class="fi" placeholder="学号/工号" placeholder-class="ph" value="{{regName}}" bindinput="onRegNameInput" /></view>
+        <view class="field mf"><image class="ic-svg" src="/images/key-outline.svg"></image><input class="fi" type="text" password placeholder="设置密码（至少8位，含字母和数字）" placeholder-class="ph" value="{{regPassword}}" bindinput="onRegPasswordInput" /></view>
+      </view>
+      <view class="mft">
+        <view class="mbtn mc" bindtap="closeRegister">取消</view>
+        <view class="mbtn mo" bindtap="onRegister"><text wx:if="{{regLoading}}">注册中</text><text wx:else>确认注册</text></view>
+      </view>
+    </view>
+  </view>
+</view>
